@@ -6,7 +6,7 @@ import { TaskInterface } from "../../types/tasksApp.interface";
 import List from "../List/List";
 import Title from "../Title/Title";
 import CancelDel from "../CancelDel/CancelDel";
-import Test from "../Test";
+
 
 const App = () => {
   // TASK LIST
