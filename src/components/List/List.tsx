@@ -10,31 +10,23 @@ const List = ({ tasks, setTasks, setCancelDel }: { tasks: TaskInterface[], setTa
 
   const [searchValues, setSearchValues] = useState({ searchValue: "", newestFirst: true, onlyCompleted: false } as searchValuesInterface)
 
-  // FILTER TASKS BY TITLE
-  function filterTasksByTitle(tasksList: TaskInterface[], searchValue: string) {
-    const filteredTasks = tasksList.filter((task) => task.title.includes(searchValue))
-    return filteredTasks
-  }
-  //sort tasks by date (id)
-  function filterTasksByDate(tasksList: TaskInterface[], newestFirst: boolean) {
-    const sortedTasks = tasksList.slice().sort((a, b) => newestFirst ? b.id - a.id : a.id - b.id)
-    return sortedTasks
-  }
-
-  // sort tasks, show only completed
-  function filterTasksByCompleted(tasksList: TaskInterface[]) {
-    const filteredTasks = tasksList.filter((task) => task.completed === true)
-    return filteredTasks
-  }
-
+  // Функция для фильтрации и сортировки задач
   const sortedList = (() => {
-    const { searchValue, newestFirst, onlyCompleted } = searchValues
-    let filteredTasks: TaskInterface[] = [...tasks]
-    if (searchValue.length > 0) { filteredTasks = filterTasksByTitle(filteredTasks, searchValue) }
-    if (!newestFirst) { filteredTasks = filterTasksByDate(filteredTasks, newestFirst) }
-    if (onlyCompleted) { filteredTasks = filterTasksByCompleted(filteredTasks) }
-    return filteredTasks
+    const { searchValue, newestFirst, onlyCompleted } = searchValues;
+
+    return tasks
+      .filter((task) => {
+        if (onlyCompleted && !task.completed) {
+          return false;
+        }
+        if (searchValue && !task.title.includes(searchValue)) {
+          return false;
+        }
+        return true;
+      })
+      .sort((a, b) => newestFirst ? b.id - a.id : a.id - b.id);
   })()
+
 
   return (
     <div className="container">

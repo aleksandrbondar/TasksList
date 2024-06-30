@@ -1,11 +1,17 @@
 import styled from 'styled-components';
 
 const btn = `
-  height: 100%;
+  width: 100%;
   padding: 10px 40px;
   border: none;
   font-size: 24px;
   transition: 0.5s;
+  @media (max-width: 992px) {
+    padding: 10px 20px;
+  }
+  @media (max-width: 576px) {
+    padding: 10px;
+  }
 `
 
 export const StyledBtnSubmit = styled.button`

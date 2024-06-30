@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
-export const CheckboxWrapper = styled.div`
+export const CheckboxWrapper = styled.div <{ checkboxType?: string }>`
+  width: 100%;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -8,20 +9,17 @@ export const CheckboxWrapper = styled.div`
   align-items: center;
   align-content: center;
   gap: 10px;
-  height: 100%;
   padding: 10px 40px;
   border: none;
   font-size: 24px;
   transition: 0.5s;
-
-  background-color: rgba(0, 255, 0, 0.2);
-
+  ${props => props.checkboxType === "taskInput" && "background-color: rgba(0, 255, 0, 0.2);"}
   &:hover {
-    background-color: rgba(0, 255, 0, 1);
+  ${props => props.checkboxType === "taskInput" && "background-color: rgba(0, 255, 0, 1);"}
   }
 `
 
-export const ChildWrapper = styled.div`
+export const ChildWrapper = styled.label`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -31,7 +29,7 @@ export const ChildWrapper = styled.div`
   gap: 25px;
 `
 
-export const StyledBtnCheckbox = styled.input.attrs({ type: 'checkbox' })`
+export const StyledBtnCheckbox = styled.input.attrs({ type: 'checkbox' }) <{ checkboxType?: string }>`
 height: 40px;
 width: 40px;
 background-color: #eee;
@@ -39,9 +37,9 @@ border-radius: 50%;
 border: none;
 outline: none;
 cursor: pointer;
-accent-color: rgba(0, 255, 0, 1);
+${props => props.checkboxType === "taskInput" && "accent-color: rgba(0, 255, 0, 0.2);"}
 
 &:checked {
-  background-color: rgba(0, 255, 0, 1);
+  ${props => props.checkboxType === "taskInput" && "background-color: rgba(0, 255, 0, 1);"}
 }
 `

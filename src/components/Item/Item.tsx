@@ -10,24 +10,16 @@ import { Task, TaskTitle, TaskInput, TaskTitleWrapper, TaskWrapper } from './Sty
 const Item = ({ task, tasks, setTasks, setCancelDel }: { task: TaskInterface, setTasks: React.Dispatch<React.SetStateAction<TaskInterface[]>>, tasks: TaskInterface[], setCancelDel: React.Dispatch<React.SetStateAction<boolean>> }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editValue, setEditValue] = useState(task.title);
-  const [hiddenTasks, setHiddenTasks] = useState(new Map());
-  const height: number | undefined = document.querySelector(`[data-id="${task.id}"]`)?.clientHeight;
-  const itemHeight: string = height ? height + "px" : "auto";
-  let removeItemTimeout: undefined | ReturnType<typeof setTimeout>;
-  // HIDE TASK
-  const hideTask = (id: number) => {
-    setHiddenTasks(new Map(...hiddenTasks).set(id, { height: itemHeight, state: "hide" }));
 
+  // DELETE TASK
+  const hideTask = (id: number) => {
+    saveLastTasks();
+    setTasks(tasks.filter((task) => task.id !== id));
+    setCancelDel(true);
     setTimeout(() => {
-      saveLastTasks();
-      setTasks(tasks.filter((task) => task.id !== id));
-      setCancelDel(true);
-      setHiddenTasks(new Map(...hiddenTasks).set(id, { height: itemHeight, state: "show" }));
-      setTimeout(() => {
-        setCancelDel(false);
-        localStorage.removeItem("prev_val");
-      }, 5000);
-    }, 1000);
+      setCancelDel(false);
+      localStorage.removeItem("prev_val");
+    }, 5000);
   };
 
   //SAVE LAST TASKS
@@ -61,10 +53,7 @@ const Item = ({ task, tasks, setTasks, setCancelDel }: { task: TaskInterface, se
   }
 
   return (
-    <TaskWrapper
-      hide={hiddenTasks.get(task.id)?.state ?? null}
-      data-id={task.id}
-      height={itemHeight}>
+    <TaskWrapper data-id={task.id}>
       <Task style={task.completed ? { backgroundColor: "rgba(0, 255, 0, 0.2)" } : {}}>
         <TaskTitleWrapper>
           {isEditing ? (
@@ -81,7 +70,7 @@ const Item = ({ task, tasks, setTasks, setCancelDel }: { task: TaskInterface, se
         </TaskTitleWrapper>
 
         <BtnGroup>
-          <Checkbox checked={task.completed} onClick={() => completeTask(task.id)}>Completed: </Checkbox>
+          <Checkbox type="taskInput" id={task.id} checked={task.completed} onClick={() => completeTask(task.id)}>Completed: </Checkbox>
           {isEditing ? (
             <Btn type="save" onClick={() => saveTask(task.id)}>Save</Btn>
           ) : (

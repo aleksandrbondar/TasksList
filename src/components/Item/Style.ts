@@ -1,47 +1,5 @@
-import styled, { css, keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { BtnGroupStyled as BtnGroup } from '../BtnGroup/Style';
-
-const createFadeInOut = (height: string) => keyframes`
-  0% {
-    padding-block: 10px;
-    height: ${height};
-    opacity: 1;
-  }
-  50% {
-    opacity: 0;
-  }
-  90% {
-    height: 0;
-    opacity: 0;
-    padding-block: 0;
-  }
-  100% {
-    height: 0;
-    opacity: 0;
-    padding-block: 0;
-  }
-`;
-
-const returnFadeInOut = (height: string) => keyframes`
-  0% {
-    height: 0;
-    opacity: 0;
-    padding-block: 0;
-  }
-  50% {
-    opacity: 0;
-    padding-block: 0;
-  }
-  90% {
-    height: ${height};
-    padding-block: 10px;
-  }
-  100% {
-    height: ${height};
-    padding-block: 10px;
-    opacity: 1;
-  }
-`;
 
 export const Task = styled.div`
   background-color: white;
@@ -55,8 +13,7 @@ export const Task = styled.div`
 `;
 
 
-export const TaskWrapper = styled.div<{ hide: string | null, height: string }>`
-
+export const TaskWrapper = styled.div`
   padding-block: 10px;
   transition: 0.5s;
   opacity: 0.8;
@@ -67,7 +24,8 @@ export const TaskWrapper = styled.div<{ hide: string | null, height: string }>`
     opacity: 1;
   }
 
-  & > ${Task} > ${BtnGroup} {
+  & > ${Task} > ${BtnGroup},
+  & > ${Task} > ${BtnGroup} > * {
     transition: 0.5s;
     height: 0;
     opacity: 0;
@@ -78,17 +36,24 @@ export const TaskWrapper = styled.div<{ hide: string | null, height: string }>`
   &:focus-within > ${Task} > ${BtnGroup},
   &:focus > ${Task} > ${BtnGroup} {
     opacity: 1;
-    height: 60px;
+    @media (max-width: 992px) {
+      height: 220px;
+    }
+    @media (min-width: 992px) {
+      height: 60px;
   }
-    ${props => props.hide === "hide" && css`
-    animation: ${createFadeInOut(props.height)} 1s ease-in-out forwards;
-  `}
-   ${props => props.hide === "show" && css`
-    animation: ${returnFadeInOut(props.height)} 1s ease-in-out forwards;
-  `}
+}
+
+  &:hover > ${Task} > ${BtnGroup} > *,
+  &:focus-within > ${Task} > ${BtnGroup} > *,
+  &:focus > ${Task} > ${BtnGroup} > * {
+    height: 60px;
+    opacity: 1;
+  }
 `
 
 export const TaskTitle = styled.h3`
+  padding-bottom: 10px;
   display: block;
   font-size: 24px;
   font-weight: bold;
